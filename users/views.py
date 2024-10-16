@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView,RetrieveAPIView
 from rest_framework import status
 from users.tokens import create_jwt_pair_for_user
 from .models import User
@@ -7,7 +7,7 @@ from .serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from django.contrib.auth import authenticate
-
+from rest_framework.permissions import IsAuthenticated 
 
 
 class ListCreateUser(ListCreateAPIView):
@@ -47,7 +47,7 @@ class LoginView(APIView):
             tokens = create_jwt_pair_for_user(user)
 
             response = {"message": "Login Succesfull", "token": tokens}#,"id":user.id
-            return Response(data=response, status=status.HTTP_200_OK)
+            return Response(data=response, status=status.HTTP_200_OK)   
 
         else:
             error_response = {
@@ -61,3 +61,14 @@ class LoginView(APIView):
 
         return Response(data=content, status=status.HTTP_200_OK)
     
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        request.auth.delete()
+        return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
+    
+class RetrieveUser(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

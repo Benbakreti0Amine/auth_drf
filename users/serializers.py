@@ -3,7 +3,6 @@ from rest_framework.validators import ValidationError
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from .models import User
-from django.contrib.auth.models import Permission
 
 class UserSerializer(serializers.ModelSerializer):
     

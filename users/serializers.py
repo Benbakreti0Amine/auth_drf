@@ -4,6 +4,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from .models import User
 from django.contrib.auth.models import Permission
+from .models import User, UserEmployer, Post, QRCode
 
 class UserSerializer(serializers.ModelSerializer):
     
@@ -78,4 +79,27 @@ class ResetPasswordSerializer(serializers.Serializer):
 class NewPasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
+
+
+# serializers for user emp
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'name', 'city', 'commune']
+
+class UserEmployerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserEmployer
+        fields = ['id', 'user', 'address', 'phone_number', 'post']
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = User.objects.create_user(**user_data)
+        user_employer = UserEmployer.objects.create(user=user, **validated_data)
+        return user_employer
+class QRCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QRCode
+        fields = ['id', 'user_employer', 'code', 'created_at']
 

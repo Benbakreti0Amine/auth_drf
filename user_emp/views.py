@@ -1,3 +1,5 @@
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 
 from feedback.models import QRCode
@@ -58,3 +60,25 @@ class GetQRCodeView(APIView):
                 {"error": "QR code for this user does not exist."},
                 status=status.HTTP_404_NOT_FOUND
             )
+        
+
+
+def get_user_from_qr_code(request, code):
+    """
+    View to retrieve user information based on the QR code.
+    """
+    # Get the QRCode instance
+    qr_instance = get_object_or_404(QRCode, code=code)
+    
+    # Retrieve the associated user
+    user = qr_instance.user
+    
+    # Return user details as JSON response
+    return JsonResponse({
+        "id": user.id,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "email": user.email,
+        "phone_number": user.phone_number,
+        "post": user.post.title if user.post else None
+    })

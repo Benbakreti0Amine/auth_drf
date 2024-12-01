@@ -4,12 +4,14 @@ from .models import QRCode, QRCodeFeedback, FormFeedback, SocialMediaFeedback
 class QRCodeFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = QRCodeFeedback
-        fields = ['id', 'user','qr_code', 'content', 'rating', 'created_at']
+        fields = ['id', 'user','qr_code', 'content', 'rating','sentiment', 'langue', 'created_at']
+        read_only_fields = ['sentiment', 'langue']
 
 class FormFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = FormFeedback
-        fields = ['id', 'user', 'title', 'content', 'service', 'other_service', 'created_at']
+        fields = ['id', 'user', 'title', 'content', 'service', 'other_service','sentiment', 'langue', 'created_at']
+        read_only_fields = ['sentiment', 'langue']
 
 class SocialMediaFeedbackSerializer(serializers.ModelSerializer):
     class Meta:

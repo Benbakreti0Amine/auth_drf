@@ -9,6 +9,9 @@ from feedback.models import QRCode
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from TextSentimentAnalyst.SocialMediaFeedback_scripts import analyze_multilingual_sentiment
+
+
 class QRCodeFeedbackViewSet(viewsets.ModelViewSet):
     queryset = QRCodeFeedback.objects.all()
     serializer_class = QRCodeFeedbackSerializer
@@ -19,6 +22,18 @@ class QRCodeFeedbackViewSet(viewsets.ModelViewSet):
         if qr_code:
             queryset = queryset.filter(qr_code__code=qr_code)
         return queryset
+    
+    def perform_create(self, serializer):
+        """Override perform_create to analyze sentiment and language before saving."""
+        content = serializer.validated_data.get('content')  # Get content from request data
+        language, sentiment = analyze_multilingual_sentiment(content)  # Analyze content
+        serializer.save(sentiment=sentiment, langue=language)
+
+    def perform_update(self, serializer):
+        """Override perform_update to analyze sentiment and language before updating."""
+        content = serializer.validated_data.get('content')  # Get content from request data
+        language, sentiment = analyze_multilingual_sentiment(content)  # Analyze content
+        serializer.save(sentiment=sentiment, langue=language)
 
 class FormFeedbackViewSet(viewsets.ModelViewSet):
     queryset = FormFeedback.objects.all()
@@ -30,6 +45,18 @@ class FormFeedbackViewSet(viewsets.ModelViewSet):
         if service:
             queryset = queryset.filter(service=service)
         return queryset
+
+    def perform_create(self, serializer):
+        """Override perform_create to analyze sentiment and language before saving."""
+        content = serializer.validated_data.get('content')  # Get content from request data
+        language, sentiment= analyze_multilingual_sentiment(content)  # Analyze content
+        serializer.save(sentiment=sentiment, langue=language)
+
+    def perform_update(self, serializer):
+        """Override perform_update to analyze sentiment and language before updating."""
+        content = serializer.validated_data.get('content')  # Get content from request data
+        language, sentiment = analyze_multilingual_sentiment(content)  # Analyze content
+        serializer.save(sentiment=sentiment, langue=language)  # Update fields with sentiment and langue
 
 class SocialMediaFeedbackViewSet(viewsets.ViewSet):
     """

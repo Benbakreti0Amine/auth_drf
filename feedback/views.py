@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import QRCode, QRCodeFeedback, FormFeedback, SocialMediaFeedback
-from .serializers import QRCodeFeedbackSerializer, FormFeedbackSerializer, QRCodeSerializer, SocialMediaFeedbackSerializer
+from .models import Alert, QRCode, QRCodeFeedback, FormFeedback, SocialMediaFeedback
+from .serializers import AlertSerializer, QRCodeFeedbackSerializer, FormFeedbackSerializer, QRCodeSerializer, SocialMediaFeedbackSerializer
 import pandas as pd
 import qrcode
 from django.http import HttpResponse
@@ -9,7 +9,7 @@ from feedback.models import QRCode
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from TextSentimentAnalyst.SocialMediaFeedback_scripts import analyze_multilingual_sentiment
+from TextSentimentAnalysis.SocialMediaFeedback_scripts import analyze_multilingual_sentiment
 
 
 class QRCodeFeedbackViewSet(viewsets.ModelViewSet):
@@ -180,3 +180,8 @@ class AllFeedbackStats(APIView):
             ),
         }
         return Response(stats)
+
+
+class AlertViewSet(viewsets.ModelViewSet):
+    queryset = Alert.objects.all()
+    serializer_class = AlertSerializer

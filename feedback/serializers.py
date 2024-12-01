@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import QRCode, QRCodeFeedback, FormFeedback, SocialMediaFeedback
+from .models import Alert, QRCode, QRCodeFeedback, FormFeedback, SocialMediaFeedback
 
 class QRCodeFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,3 +24,9 @@ class QRCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = QRCode
         fields = ['id', 'user', 'code', 'created_at']
+
+
+class AlertSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alert
+        fields = ['id', 'feedback_type', 'feedback_id', 'message', 'created_at', 'is_traitement']

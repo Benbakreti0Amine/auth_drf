@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.conf import settings
 from users.models import User
@@ -51,3 +52,16 @@ class SocialMediaFeedback(models.Model):
     def __str__(self):
         return f"Social Media Feedback from {self.username} on {self.platform}"
 
+
+
+
+class Alert(models.Model):
+    feedback_type = models.CharField(max_length=100, choices=[
+        ('QRCodeFeedback', 'QRCodeFeedback'),
+        ('FormFeedback', 'FormFeedback'),
+        ('SocialMediaFeedback', 'SocialMediaFeedback')
+    ])
+    feedback_id = models.PositiveIntegerField()  # Store the ID of the feedback that triggered the alert
+    message = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+    is_traitement = models.BooleanField(default=False)

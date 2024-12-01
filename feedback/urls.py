@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
+    AlertViewSet,
     AllFeedbackStats,
     QRCodeFeedbackViewSet, 
     FormFeedbackViewSet, 
@@ -18,8 +19,8 @@ router.register(r'qr-feedback', QRCodeFeedbackViewSet)
 router.register(r'form-feedback', FormFeedbackViewSet)
 router.register(r'social-feedback', SocialMediaFeedbackViewSet, basename='social-feedback')
 router.register(r'qrcodes', QRCodeViewSet, basename='qrcode')
+router.register(r'alert', AlertViewSet, basename='alert')
 
-# Définir les chemins supplémentaires pour les vues statistiques
 urlpatterns = [
     path('', include(router.urls)),  # Inclut les routes générées par le routeur
     path('generate-qr/<str:code>/', generate_qr_code_image, name='generate_qr'),  # Route pour générer un QR code
@@ -28,3 +29,7 @@ urlpatterns = [
     path('api/social-feedback/stats/', SocialMediaFeedbackStats.as_view(), name='social_feedback_stats'),  # Statistiques Social Feedback
     path('api/ALL/stats/', AllFeedbackStats.as_view(), name='all_feedback_stats'),  # Nouvelle route pour toutes les statistiques
 ]
+
+
+
+

@@ -16,6 +16,8 @@ class QRCodeFeedback(models.Model):
     content = models.TextField()
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
     created_at = models.DateTimeField(auto_now_add=True)
+    sentiment = models.CharField(max_length=20, choices=[('positive', 'Positive'), ('neutral', 'Neutral'), ('negative', 'Negative') ] ,default='Neutral')
+    langue = models.CharField(max_length=50,default='unknown')
 
     def __str__(self):
         return f"QR Feedback from {self.user.get_full_name()} for {self.user_employer.user.get_full_name()}"
@@ -33,6 +35,8 @@ class FormFeedback(models.Model):
     service = models.CharField(max_length=20, choices=SERVICE_CHOICES)
     other_service = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    sentiment = models.CharField(max_length=20, choices=[('positive', 'Positive'), ('neutral', 'Neutral'), ('negative', 'Negative') ] ,default='Neutral')
+    langue = models.CharField(max_length=50,default='unknown')
 
     def __str__(self):
         return f"Form Feedback: {self.title} by {self.user.get_full_name()} for {self.get_service_display()}"
@@ -40,8 +44,8 @@ class FormFeedback(models.Model):
 class SocialMediaFeedback(models.Model):
     username = models.CharField(max_length=100)
     content = models.TextField()
-    sentiment = models.CharField(max_length=20, choices=[('positive', 'Positive'), ('neutral', 'Neutral'), ('negative', 'Negative')])
-    langue = models.CharField(max_length=50)
+    sentiment = models.CharField(max_length=20, choices=[('positive', 'Positive'), ('neutral', 'Neutral'), ('negative', 'Negative') ] ,default='Neutral')
+    langue = models.CharField(max_length=50,default='unknown')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

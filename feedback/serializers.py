@@ -14,7 +14,7 @@ class FormFeedbackSerializer(serializers.ModelSerializer):
 class SocialMediaFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMediaFeedback
-        fields = ['id', 'username', 'platform', 'content', 'sentiment', 'created_at']
+        fields = ['id', 'username', 'content', 'sentiment','langue', 'created_at']
 
 class QRCodeSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)  # Optional: Customize the representation of the related User field.

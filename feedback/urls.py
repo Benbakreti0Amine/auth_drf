@@ -5,7 +5,7 @@ from .views import QRCodeFeedbackViewSet, FormFeedbackViewSet, QRCodeViewSet, So
 router = DefaultRouter()
 router.register(r'qr-feedback', QRCodeFeedbackViewSet)
 router.register(r'form-feedback', FormFeedbackViewSet)
-router.register(r'social-media-feedback', SocialMediaFeedbackViewSet)
+router.register(r'social-feedback', SocialMediaFeedbackViewSet, basename='social-feedback')
 router.register(r'qrcodes', QRCodeViewSet, basename='qrcode')
 urlpatterns = [
     path('', include(router.urls)),
